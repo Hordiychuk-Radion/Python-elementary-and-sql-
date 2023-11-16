@@ -1,0 +1,182 @@
+https://www.w3schools.com/sql/trysql.asp?filename=trysql_select_all
+тут трохи є зміни, в 15 не впевнений
+1. Вибрати всі записи з таблиці "Користувачі" (Users).
+
+1. SELECT * FROM Customers;
+
+2. Вибрати ім'я та прізвище користувачів, які мають вік менше або рівний 25 рокам.
+
+SELECT * FROM [Customers]
+where CustomerID <= 25;
+
+3. Підрахувати кількість користувачів у кожному місті.
+
+SELECT City,  COUNT(*) as CustomerName
+FROM Customers
+GROUP BY city;
+
+4. Вибрати всі унікальні категорії товарів з таблиці "Товари" (Products).
+
+SELECT DISTINCT ProductName
+FROM Products;
+
+5. Оновити запис про користувача з ідентифікатором 123, змінивши його електронну адресу на "нова_адреса@email.com".
+UPDATE Customers
+SET ContactName = 'нова_адреса@email.com'
+WHERE CustomerID = 123
+
+6. Вибрати всіх користувачів, які замовили товари у категорії "Електроніка" з таблиць "Користувачі" та "Замовлення".
+
+SELECT CustomerName FROM Customers
+Join Orders on Customers.CustomerID = Orders.CustomerID;
+
+
+
+7. Вибрати всі унікальні категорії товарів, які були замовлені хоча б один раз.
+
+SELECT DISTINCT ProductName FROM Products
+
+
+8. Знайти середній вік користувачів.
+
+ALTER TABLE Employees
+ADD Age INT;
+UPDATE Employees
+SET Age = 2020 - YEAR(BirthDate);
+SELECT AVG(Age) AS Average_age
+FROM Employees;
+
+9. Знайти найвищу ціну товару в кожній категорії.
+
+SELECT ProductName, MAX(Price) AS MAX_PRICE
+FROM Products
+GROUP BY ProductName;
+
+10. Знайти кількість замовлень для кожного користувача.
+
+SELECT CustomerID, COUNT(OrderID) AS Numbers_orders
+FROM Orders
+GROUP BY CustomerID;
+
+11. Знайти загальну суму всіх замовлень.
+
+SELECT SUM(Quantity) AS Загальна_сума_замовлень
+FROM OrderDetails;
+
+
+12. Вибрати всіх користувачів, які не зробили жодного замовлення.
+
+SELECT Customers.CustomerName, Customers.CustomerID
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+WHERE Orders.CustomerID IS NULL;
+
+
+
+13. Знайти середню кількість товарів в замовленні.
+
+SELECT AVG(Quantity) AS AVG
+FROM OrderDetails;
+
+
+14. Вибрати всіх користувачів, які мають замовлення в категорії "Одяг" та "Взуття".
+
+SELECT Customers.CustomerName, Customers.CustomerID
+FROM Customers
+JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+JOIN Products ON OrderDetails.ProductID = Products.ProductID
+JOIN Categories ON Products.CategoryID = Categories.CategoryID
+WHERE Categories.CategoryName IN ("Produce", "Seafood")
+GROUP BY Customers.CustomerName, Customers.CustomerID
+HAVING COUNT(DISTINCT Categories.CategoryName) = 2;
+
+15. Підрахувати кількість замовлень, які були зроблені в кожному місяці.
+
+SELECT DATE_FORMAT(OrderDate, '%Y-%m') AS Month,
+       COUNT(OrderID) AS OrderCount
+FROM Orders
+GROUP BY Month
+ORDER BY Month;
+
+
+16. Які є різновиди JOIN-операцій в SQL, і як вони відрізняються один від одного?
+
+INNER JOIN:
+Повертає тільки рядки, які мають збіги у обох таблицях.
+Рядки, які не мають збігів у обох таблицях, відкидаються.
+Це найбільш поширений тип JOIN за замовчуванням, коли ви вказуєте просто JOIN без іншого ключового слова.
+
+LEFT JOIN (або LEFT OUTER JOIN):
+Повертає всі рядки з лівої таблиці (першої), а також відповідні рядки з правої таблиці (другої).
+
+Якщо немає відповідностей в правій таблиці, вона повертає NULL значення.
+RIGHT JOIN (або RIGHT OUTER JOIN):
+
+Повертає всі рядки з правої таблиці (другої), а також відповідні рядки з лівої таблиці (першої).
+Якщо немає відповідностей в лівій таблиці, вона повертає NULL значення.
+
+FULL JOIN (або FULL OUTER JOIN):
+
+Повертає всі рядки з обох таблиць.
+Якщо немає відповідностей у будь-якій таблиці, вона повертає NULL значення.
+
+17. Що таке агрегатні функції в SQL, і які з них ви знаєте?
+Звісно, ось перелік агрегатних функцій без прикладів:
+
+1. **SUM()**: Обчислення суми числових значень.
+
+2. **AVG()**: Розрахунок середнього значення числових даних.
+
+3. **COUNT()**: Підрахунок кількості рядків в результуючій вибірці.
+
+4. **MIN()**: Знаходження мінімального значення серед чисел.
+
+5. **MAX()**: Визначення максимального значення серед чисел.
+
+
+18. Як можна вибрати всіх користувачів, які не мають замовлень, використовуючи LEFT JOIN?
+
+SELECT Customers.CustomerName, Customers.CustomerID
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+WHERE Orders.CustomerID IS NULL;
+
+
+19. Як визначити найбільше значення в колонці використовуючи SQL?
+ функція MAX() 
+
+20. Як вибрати всі замовлення, які мають більше ніж 3 товари?
+SELECT Orders.OrderID
+FROM Orders
+JOIN OrderDetails ON Orders.OrderID = OrderDetails.OrderID
+GROUP BY Orders.OrderID
+HAVING COUNT(OrderDetails.ProductID) > 3;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+С появлением больших данных сфера ответственности резко изменилась. Если раньше эти эксперты писали большие SQL-запросы и перегоняли данные с помощью таких инструментов, как Informatica ETL, Pentaho ETL, Talend, то теперь требования к дата-инженерам повысились.
+
+Большинство компаний с открытыми вакансиями на должность дата-инженера предъявляют следующие требования:
+
+Отличное знание SQL и Python.
+Опыт работы с облачными платформами, в частности Amazon Web Services.
+Предпочтительно знание Java/Scala.
+Хорошее понимание баз данных SQL и NoSQL (моделирование данных, хранение данных).
+
+Имейте в виду, это только самое необходимое. Из этого списка можно предположить, что дата-инженеры являются специалистами в области разработки программного обеспечения и бекенда.
+Например, если компания начинает генерировать большой объем данных из разных источников, ваша задача как дата-инженера состоит в том, чтобы организовать сбор информации, ее обработку и хранение.
+
+Список используемых в этом случае инструментов может отличаться, все зависит от объема этих данных, скорости их поступления и неоднородности. Большинство компаний вообще не сталкиваются с большими данными, поэтому в качестве централизованного хранилища, так называемого хранилища данных, можно использовать базу данных SQL (PostgreSQL, MySQL и т. д.) с небольшим набором скриптов, которые направляют данные в хранилище.
+
